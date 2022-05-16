@@ -1,0 +1,11 @@
+{% extends 'base2.html' %} {% load static %} {% block content %}
+<h1>Book list page</h1>
+{% for Book in object_list %}
+<ul>
+  <li> <a href="{% url 'bookdetail' Book.pk %}"> name </a> : {{ Book.name }}</li>
+  <li>category : {{ Book.category }}</li>
+</ul>
+
+{% endfor %}
+
+{% endblock content %}
