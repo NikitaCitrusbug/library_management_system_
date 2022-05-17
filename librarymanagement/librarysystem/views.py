@@ -59,7 +59,7 @@ class AddBook(CreateView):
     template_name = 'book/add_book.html'
 
     def post(self, request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST.getlist('author_id'))
         if form.is_valid():
             form.save()
             print('msg')
