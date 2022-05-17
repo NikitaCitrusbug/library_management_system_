@@ -3,6 +3,11 @@ from tkinter import Widget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Author, Category, User , Book
+
+
+
+
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
@@ -38,15 +43,21 @@ class LoginForm(UserCreationForm):
 
 
 class AddForm(forms.ModelForm):
+    authorname = forms.ModelMultipleChoiceField(queryset=Author.objects.all())
+    
+    widget=forms.CheckboxSelectMultiple()
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = ['name' , 'discription' , 'quantity' , 'category' , 'authorname']
+        
                 
         widgets = {
             'name':forms.TextInput(attrs={'class':'form-control','placeholder':'Name'}),
             'discription':forms.TextInput(attrs={'class':'form-control','placeholder':'Discription'}),
             'quantity':forms.NumberInput(attrs={'class':'form-control','placeholder':'quantity'}),
             'category':forms.Select(attrs={'class':'form-control form-select','placeholder':'select category'}),
+            'authorname':forms.Select(attrs={'class':'form-control form-select','placeholder':'select author'}),
+            
            
         }
 

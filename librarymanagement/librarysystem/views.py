@@ -62,6 +62,7 @@ class AddBook(CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
+            print('msg')
             return redirect('bookretrieve')
         else:
             return HttpResponse('error')
