@@ -4,7 +4,9 @@
 <ul>
   <li><a href="{% url 'authordetail' Author.pk %}"> name </a> : {{Author.name}}</li>
 
-  <li>book : {{Author.book.all}}</li>
+  <li>book : {% for auth in Author.book.all %} 
+  {{auth}}
+  {% endfor %}</li>
 </ul>
 {% endfor %}
 

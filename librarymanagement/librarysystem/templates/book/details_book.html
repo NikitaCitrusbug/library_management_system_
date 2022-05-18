@@ -7,6 +7,8 @@
   discription : {{detail.discription}}<br>
   quantity : {{detail.quantity}}<br>
   category : {{detail.category}}<br>
-  authorname : {{author}}<br>
+  authorname : {% for auth in author %}
+  {{auth}}
+  {% endfor %}<br>
 </ul>
 {% endblock content %}
