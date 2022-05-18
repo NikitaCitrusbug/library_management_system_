@@ -2,7 +2,7 @@ from dataclasses import fields
 from tkinter import Widget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Author, Category, User , Book
+from .models import Author, Category, User , Book , IssuedBooks
 
 
 
@@ -89,4 +89,8 @@ class UpdateAuthorForm(forms.ModelForm):
         fields = '__all__'
 
 
+class IssuedBooksForm(forms.ModelForm):
+    class Meta:
+        model = IssuedBooks
+        fields = '__all__'
 

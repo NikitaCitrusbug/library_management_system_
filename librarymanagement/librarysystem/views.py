@@ -12,8 +12,8 @@ from django.shortcuts import render, redirect, reverse
 from django import forms
 from librarysystem import forms
 from django.http import HttpResponse, HttpResponseRedirect
-from librarysystem.models import Author, Category, User, AbstractUser, Book
-from librarysystem.forms import AddForm, CustomMemberCreationForm, CustomUserCreationForm, LoginForm, AddCategoryForm, AddAuthorForm, UpdateBookForm , UpdateAuthorForm , UpdateCategoryForm
+from librarysystem.models import Author, Category, User, AbstractUser, Book , IssuedBooks
+from librarysystem.forms import AddForm, CustomMemberCreationForm, CustomUserCreationForm, LoginForm, AddCategoryForm, AddAuthorForm, UpdateBookForm , UpdateAuthorForm , UpdateCategoryForm , IssuedBooksForm
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.forms import AuthenticationForm
@@ -64,7 +64,7 @@ class AddBook(CreateView):
                 print(a)
                 authors = Author.objects.get(id = a)
                 authors.book.add(book)
-                return redirect('bookretrieve')
+            
             
 
             # print(authors)
@@ -80,6 +80,7 @@ class BookDetail(DetailView):
     def get(self ,request , pk):
             context = {}
             context['detail'] = Book.objects.get(id = pk)
+            context['author'] = Author.objects.filter(book__pk = pk )
             
             return render(request , self.template_name , context)
         
@@ -213,7 +214,19 @@ class AuthorDelete(DeleteView):
     success_url = "/Dashboard1/"
 
 class Issue(View):
+    model = IssuedBooks
+    form_class = IssuedBooksForm
     template_name = 'issue.html'
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request , self.template_name)
+        else:
+            return HttpResponse('error')
+    
+
 
     def get(self, request):
         return render(request, self.template_name)
