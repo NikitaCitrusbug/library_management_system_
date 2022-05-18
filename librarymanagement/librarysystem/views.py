@@ -1,3 +1,4 @@
+from ast import Return
 import http
 from multiprocessing import context
 from re import template
@@ -48,24 +49,42 @@ class BookRetrieve(ListView):
     model = Book
     template_name = 'book/book_list.html'
 
-
-class BookDetail(DetailView):
-    model = Book
-    template_name = 'book/details_book.html'
-
 class AddBook(CreateView):
     model = Book
     form_class = AddForm
     template_name = 'book/add_book.html'
 
     def post(self, request):
-        form = self.form_class(request.POST.getlist('author_id'))
+        data = request.POST.copy()
+        authors = data.pop('authorname')
+        form = self.form_class(data)
         if form.is_valid():
-            form.save()
-            print('msg')
+            book = form.save()
+            for a in authors:
+                print(a)
+                authors = Author.objects.get(id = a)
+                authors.book.add(book)
+                return redirect('bookretrieve')
+            
+
+            # print(authors)
+            # print('msg')
             return redirect('bookretrieve')
         else:
             return HttpResponse('error')
+
+class BookDetail(DetailView):
+    model = Book
+    template_name = 'book/details_book.html'
+   
+    def get(self ,request , pk):
+            context = {}
+            context['detail'] = Book.objects.get(id = pk)
+            
+            return render(request , self.template_name , context)
+        
+
+
 
 
 class BookUpdate(UpdateView):

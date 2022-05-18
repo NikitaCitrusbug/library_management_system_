@@ -43,7 +43,7 @@ class LoginForm(UserCreationForm):
 
 
 class AddForm(forms.ModelForm):
-    authorname = forms.ModelMultipleChoiceField(queryset=Author.objects.all())
+    authorname = forms.ModelMultipleChoiceField(queryset=Author.objects.all(), required=False)
     
     widget=forms.CheckboxSelectMultiple()
     class Meta:
@@ -61,7 +61,6 @@ class AddForm(forms.ModelForm):
            
         }
 
-     
 
 class UpdateBookForm(forms.ModelForm):
     class Meta:
